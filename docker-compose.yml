@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  gateway:
+    build: .
+    restart: always
+    privileged: true
+    stdin_open: true
+    tty: true
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "50m"
+    network_mode: "service:miner"
+    volumes:
+      - /sys:/sys
+      - /dev:/dev
+      
+  miner:
+    image: quay.io/team-helium/miner:${MINER_TAG:-latest-arm64}
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "50m"
+    ports:
+      - "44158:44158/tcp"
+      - "1680:1680/udp"
+    volumes:
+      - /var/data:/var/data
+
+    environment:
+      - 'REGION_OVERRIDE=US915'
