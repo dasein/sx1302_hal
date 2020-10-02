@@ -113,7 +113,9 @@
     },
 
     "gateway_conf": {
-        "gps_i2c_path": "/dev/i2c-1",
+        "fake_gps": false,
+        "gps": true,
+        "gps_tty_path": "/dev/ttyS0",        
         "gateway_ID": "AA555A0000000000",
         /* change with default server address/ports */
         "server_address": "localhost",
