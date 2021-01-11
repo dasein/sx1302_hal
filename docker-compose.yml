@@ -2,7 +2,12 @@ version: '3.3'
 
 services:
   gateway:
-    build: .
+    build:
+      context: .
+      args:
+        GATEWAY_SERVER: localhost
+        GATEWAY_TYPE: sx1250
+        GATEWAY_REGION: US915
     restart: always
     privileged: true
     stdin_open: true
@@ -15,7 +20,7 @@ services:
     volumes:
       - /sys:/sys
       - /dev:/dev
-      
+
   miner:
     image: quay.io/team-helium/miner:${MINER_TAG:-latest-arm64}
     restart: always
@@ -27,7 +32,7 @@ services:
       - "44158:44158/tcp"
       - "1680:1680/udp"
     volumes:
-      - /var/data:/var/data
+      - ${MINER_VOLUME:-/var/data}:/var/data
 
     environment:
       - 'REGION_OVERRIDE=US915'
